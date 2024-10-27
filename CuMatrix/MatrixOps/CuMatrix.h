@@ -2,8 +2,6 @@
 #include "cuda_runtime.h"
 #include "CuMatrixDefs.h"
 #include "device_launch_parameters.h"
-#define SQR(x) ((x) * (x))
-#define CUBE(x) ((x) * (x) * (x))
 
 #ifndef __CUDACC__
 #include <assert.h>

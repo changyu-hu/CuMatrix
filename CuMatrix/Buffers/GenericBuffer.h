@@ -1,6 +1,7 @@
 #pragma once
 #include "cuda_runtime.h"
 #include <stdint.h>
+#include <memory>
 enum class CudaDataType : int32_t
 {
     //! 32-bit floating point format.
@@ -305,7 +306,7 @@ template <typename AllocFunc, typename FreeFunc, typename Class>
 class ClassBuffer
 {
 public:
-    typedef std::shared_ptr<ClassBuffer> SharedPtr;
+    using SharedPtr = std::shared_ptr<ClassBuffer>;
     typedef ClassBuffer* Ptr;
 
     ClassBuffer(bool callConstructor = false) {
@@ -336,7 +337,7 @@ public:
 
     Class& operator->() const
     {
-        return *target;
+        return *((Class *) data);
     }
 protected:
     void* data;
@@ -352,6 +353,6 @@ class DeviceClassBuffer : public ClassBuffer<DeviceAllocator, DeviceFree, Class>
 public:
 
     void fromCPU(Class* pObj) {
-        CUDA_CHECK_RET(cudaMemcpy(data, pObj, sizeof(Class), cudaMemcpyHostToDevice));
+        CUDA_CHECK_RET(cudaMemcpy(this->data, pObj, sizeof(Class), cudaMemcpyHostToDevice));
     }
 };

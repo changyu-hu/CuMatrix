@@ -2,6 +2,7 @@
 #include "cuda_runtime.h"
 #include "../MatrixOps/CuMatrixDefs.h"
 #include "GenericBuffer.h"
+#include <type_traits>
 
 ////! 32-bit floating point format.
 //kFLOAT = 0,
@@ -30,27 +31,27 @@ struct TypeSelceter
 
 	template <typename T>
 	static CudaDataType selectTypes() { 
-		if constexpr (std::is_pointer_v<T>) return CudaDataType::kPOINTER;
-		else if constexpr (std::is_same_v<T, long>) return CudaDataType::kINT32;
-		else if constexpr (std::is_same_v<T, int32_t>) return CudaDataType::kINT32;
-		else if constexpr (std::is_same_v<T, float>) return CudaDataType::kFLOAT;
-		else if constexpr (std::is_same_v<T, short>) return CudaDataType::kHALF;
-		else if constexpr (std::is_same_v<T, unsigned char>) return CudaDataType::kINT8;
-		else if constexpr (std::is_same_v<T, int8_t>) return CudaDataType::kINT8;
-		else if constexpr (std::is_same_v<T, bool>) return CudaDataType::kBOOL;
+		if constexpr (std::is_pointer<T>::value) return CudaDataType::kPOINTER;
+		else if constexpr (std::is_same<T, long>::value) return CudaDataType::kINT32;
+		else if constexpr (std::is_same<T, int32_t>::value) return CudaDataType::kINT32;
+		else if constexpr (std::is_same<T, float>::value) return CudaDataType::kFLOAT;
+		else if constexpr (std::is_same<T, short>::value) return CudaDataType::kHALF;
+		else if constexpr (std::is_same<T, unsigned char>::value) return CudaDataType::kINT8;
+		else if constexpr (std::is_same<T, int8_t>::value) return CudaDataType::kINT8;
+		else if constexpr (std::is_same<T, bool>::value) return CudaDataType::kBOOL;
 		else return CudaDataType::kSTRUCT;
 	}
 
 	template <typename T>
 	static size_t getTypeSize() {
-		if constexpr (std::is_pointer_v<T>) return 8;
-		else if constexpr (std::is_same_v<T, long>) return 4;
-		else if constexpr (std::is_same_v<T, int32_t>) return 4;
-		else if constexpr (std::is_same_v<T, float>) return 4;
-		else if constexpr (std::is_same_v<T, short>) return 2;
-		else if constexpr (std::is_same_v<T, unsigned char>) return 1;
-		else if constexpr (std::is_same_v<T, int8_t>) return 1;
-		else if constexpr (std::is_same_v<T, bool>) return 1;
+		if constexpr (std::is_pointer<T>::value) return 8;
+		else if constexpr (std::is_same<T, long>::value) return 4;
+		else if constexpr (std::is_same<T, int32_t>::value) return 4;
+		else if constexpr (std::is_same<T, float>::value) return 4;
+		else if constexpr (std::is_same<T, short>::value) return 2;
+		else if constexpr (std::is_same<T, unsigned char>::value) return 1;
+		else if constexpr (std::is_same<T, int8_t>::value) return 1;
+		else if constexpr (std::is_same<T, bool>::value) return 1;
 		else return sizeof(T);
 	}
 };

@@ -378,6 +378,19 @@ namespace CuMatrix
 	}
 
 	template <typename DType>
+	GPU_CPU_INLINE_FUNC void vec9Minus(const DType* v1, const DType* v2, DType* result) {
+		result[0] = v1[0] - v2[0];
+		result[1] = v1[1] - v2[1];
+		result[2] = v1[2] - v2[2];
+		result[3] = v1[3] - v2[3];
+		result[4] = v1[4] - v2[4];
+		result[5] = v1[5] - v2[5];
+		result[6] = v1[6] - v2[6];
+		result[7] = v1[7] - v2[7];
+		result[8] = v1[8] - v2[8];
+	}
+
+	template <typename DType>
 	GPU_CPU_INLINE_FUNC void vec9MulAddTo(const DType* v1, const DType a, DType* result) {
 		result[0] += v1[0] * a;
 		result[1] += v1[1] * a;
